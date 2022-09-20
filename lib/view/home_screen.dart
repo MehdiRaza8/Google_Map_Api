@@ -32,11 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
         position: LatLng(25.027031834675903, 67.14843287510035),
         infoWindow: InfoWindow(title: 'Gulshan')),
   ];
+
   Future<Position> getUserCurrentLocation() async {
     await Geolocator.requestPermission()
         .then((value) {})
-        .onError((errror, stackTrace) {
-      print('error' + errror.toString());
+        .onError((error, stackTrace) {
+      print('error' + error.toString());
     });
     return await Geolocator.getCurrentPosition();
   }
@@ -69,16 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
             getUserCurrentLocation().then((value) async {
               print('My curent Location');
               print(
-                  value.altitude.toString() + '' + value.longitude.toString());
+                  value.latitude.toString() + '' + value.longitude.toString());
               _marker.add(
                 Marker(
                     markerId: MarkerId('2'),
-                    position: LatLng(value.altitude, value.longitude),
+                    position: LatLng(value.latitude, value.longitude),
                     infoWindow: InfoWindow(title: 'My Location')),
               );
               CameraPosition cameraPosition = CameraPosition(
                 zoom: 14,
-                target: LatLng(value.altitude, value.longitude),
+                target: LatLng(value.latitude, value.longitude),
               );
               final GoogleMapController controller = await _controller.future;
               controller.animateCamera(
